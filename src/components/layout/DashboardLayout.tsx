@@ -5,6 +5,7 @@ import {
   LayoutDashboard, 
   PlusCircle, 
   History, 
+  Database,
   Users, 
   Settings, 
   FlaskConical,
@@ -25,6 +26,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
     { icon: PlusCircle, label: 'New Design', path: '/new-project' },
+    { icon: Database, label: 'Library', path: '/library' },
     { icon: History, label: 'Project History', path: '/history' },
     { icon: Users, label: 'Team', path: '/team' },
     { icon: Settings, label: 'Settings', path: '/settings' },
@@ -37,7 +39,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="p-6">
           <Link to="/" className="flex items-center gap-2">
             <FlaskConical className="w-8 h-8 text-secondary" />
-            <span className="text-xl font-bold tracking-tight">VacuAI.kz</span>
+            <span className="text-xl font-bold tracking-tight">BaiVax</span>
           </Link>
         </div>
 

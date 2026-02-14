@@ -25,6 +25,8 @@ export type Project = {
   analysisResults?: string; // JSON string
   mrnaSequence?: string;
   lnpComposition?: string; // JSON string
+  vaccineType?: string;
+  geneticAdaptation?: string; // JSON string
   status: 'draft' | 'analyzing' | 'completed';
   timeSaved: number; // in hours
   createdAt: string;

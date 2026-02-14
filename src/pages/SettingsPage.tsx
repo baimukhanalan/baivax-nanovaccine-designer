@@ -54,6 +54,9 @@ export function SettingsPage() {
             <TabsTrigger value="notifications" className="gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Bell className="w-4 h-4" /> Notifications
             </TabsTrigger>
+            <TabsTrigger value="billing" className="gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
+              <DollarSign className="w-4 h-4" /> Billing
+            </TabsTrigger>
             <TabsTrigger value="data" className="gap-2 rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
               <Database className="w-4 h-4" /> Data & Export
             </TabsTrigger>
@@ -171,6 +174,39 @@ export function SettingsPage() {
                     <Switch defaultChecked={i < 2} />
                   </div>
                 ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="billing">
+            <Card className="border-none shadow-xl">
+              <CardHeader>
+                <CardTitle>Subscription & Billing</CardTitle>
+                <CardDescription>Manage your research plan and payment methods.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="p-6 bg-primary text-primary-foreground rounded-2xl flex items-center justify-between">
+                  <div className="space-y-1">
+                    <p className="text-xs text-primary-foreground/60 uppercase font-bold tracking-widest">Current Plan</p>
+                    <p className="text-2xl font-bold">Biotech Lab Pro</p>
+                    <p className="text-sm text-primary-foreground/70">Next renewal: March 15, 2024</p>
+                  </div>
+                  <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 border-none">Upgrade Plan</Button>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-bold text-primary">Payment Methods</h4>
+                  <div className="flex items-center justify-between p-4 border rounded-xl">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-8 bg-muted rounded flex items-center justify-center font-bold text-[10px]">VISA</div>
+                      <div>
+                        <p className="text-sm font-bold">•••• 4242</p>
+                        <p className="text-xs text-muted-foreground">Expires 12/25</p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="sm">Edit</Button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

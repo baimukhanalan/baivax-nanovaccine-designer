@@ -72,7 +72,7 @@ export function AuthPage() {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-2">
             <FlaskConical className="w-10 h-10 text-secondary" />
-            <span className="text-2xl font-bold tracking-tight text-primary">VacuAI.kz</span>
+            <span className="text-2xl font-bold tracking-tight text-primary">BaiVax</span>
           </div>
         </div>
 
@@ -83,8 +83,8 @@ export function AuthPage() {
             </CardTitle>
             <CardDescription className="text-center">
               {isLogin 
-                ? 'Enter your credentials to access your dashboard' 
-                : 'Join the next generation of vaccine design'}
+                ? 'Enter your credentials to access the BaiVax dashboard' 
+                : 'Join the next generation of vaccine design for Central Asia'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

@@ -9,10 +9,10 @@ export function Footer() {
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <FlaskConical className="w-8 h-8 text-secondary" />
-              <span className="text-xl font-bold tracking-tight">VacuAI.kz</span>
+              <span className="text-xl font-bold tracking-tight">BaiVax</span>
             </Link>
             <p className="text-sm text-primary-foreground/60 max-w-xs">
-              AI-powered platform for rapid mRNA vaccine design, optimized for Central Asian virus strains.
+              Next-generation AI platform for vaccine design, enabling scientists to create optimized vaccines in minutes with a focus on nano-delivery and Central Asian strains.
             </p>
           </div>
           
@@ -47,7 +47,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-primary-foreground/10 mt-12 pt-8 text-center text-sm text-primary-foreground/40">
-          <p>© {new Date().getFullYear()} VacuAI.kz. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} BaiVax. All rights reserved.</p>
         </div>
       </div>
     </footer>

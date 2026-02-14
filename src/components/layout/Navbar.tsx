@@ -11,7 +11,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <FlaskConical className="w-8 h-8 text-secondary" />
-          <span className="text-xl font-bold tracking-tight text-primary">VacuAI.kz</span>
+          <span className="text-xl font-bold tracking-tight text-primary">BaiVax</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

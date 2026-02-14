@@ -53,13 +53,13 @@ export function DashboardPage() {
     },
     { 
       label: 'Time Saved', 
-      value: `${projects.reduce((acc, p) => acc + (p.timeSaved || 0), 0).toFixed(1)}h`, 
+      value: `${projects.reduce((acc, p) => acc + (p.timeSaved || 0), 0).toFixed(1)} Days`, 
       icon: Clock, 
       color: 'text-accent bg-accent/10' 
     },
     { 
-      label: 'Cost Efficiency', 
-      value: `${(projects.length * 15).toFixed(0)}%`, 
+      label: 'Regional Adaptation', 
+      value: '100%', 
       icon: TrendingUp, 
       color: 'text-green-600 bg-green-600/10' 
     },

@@ -26,9 +26,17 @@ import { toast } from 'react-hot-toast';
 import { Progress } from '../components/ui/progress';
 
 const STRAINS = [
-  { id: 'covid-almaty-24', name: 'SARS-CoV-2 (Almaty-24 Variant)', type: 'Virus' },
-  { id: 'flu-astana-23', name: 'Influenza A (Astana-23 Strain)', type: 'Virus' },
-  { id: 'custom', name: 'Custom Upload (FASTA)', type: 'Upload' },
+  { id: 'covid-almaty-24', name: 'SARS-CoV-2 (Almaty-24)', region: 'Kazakhstan', type: 'Virus' },
+  { id: 'flu-tashkent-23', name: 'Influenza A (Tashkent-23)', region: 'Uzbekistan', type: 'Virus' },
+  { id: 'hepatitis-bishkek', name: 'Hepatitis B (Bishkek-D)', region: 'Kyrgyzstan', type: 'Virus' },
+  { id: 'rsv-astana-24', name: 'RSV (Astana-24)', region: 'Kazakhstan', type: 'Virus' },
+  { id: 'custom', name: 'Custom Upload (FASTA)', region: 'User Provided', type: 'Upload' },
+];
+
+const VACCINE_TYPES = [
+  { id: 'mrna', name: 'mRNA Vaccine', description: 'Synthetic mRNA in LNP carrier' },
+  { id: 'protein', name: 'Protein Subunit', description: 'Recombinant viral proteins' },
+  { id: 'vector', name: 'Viral Vector', description: 'Adenoviral delivery system' },
 ];
 
 export function NewProjectPage() {
@@ -42,6 +50,8 @@ export function NewProjectPage() {
   // Form State
   const [projectName, setProjectName] = useState('');
   const [selectedStrain, setSelectedStrain] = useState('');
+  const [vaccineType, setVaccineType] = useState('mrna');
+  const [optimizationPriority, setOptimizationPriority] = useState('immunogenicity');
   const [fastaData, setFastaData] = useState('');
   const [uploadingFile, setUploadingFile] = useState(false);
   
@@ -49,6 +59,7 @@ export function NewProjectPage() {
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [mrnaSequence, setMrnaSequence] = useState('');
   const [lnpComposition, setLnpComposition] = useState<any>(null);
+  const [geneticAdaptation, setGeneticAdaptation] = useState<any>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -86,8 +97,17 @@ export function NewProjectPage() {
 
     try {
       const { object } = await blink.ai.generateObject({
-        prompt: `Analyze the viral genotype for vaccine design. Strain: ${selectedStrain}. FASTA: ${fastaData.substring(0, 500)}... 
-        Identify mutations specific to Central Asia, suggest optimized mRNA codons, and recommend LNP (Lipid Nanoparticles) composition.`,
+        prompt: `Analyze the viral genotype for vaccine design. 
+        Strain: ${selectedStrain}. 
+        Vaccine Type: ${vaccineType}.
+        Priority: ${optimizationPriority}.
+        FASTA: ${fastaData.substring(0, 500)}... 
+        
+        Tasks:
+        1. Identify mutations specific to Central Asia.
+        2. Suggest optimized sequence based on vaccine type.
+        3. Recommend nano-carrier (LNP) composition.
+        4. Adapt design for Central Asian genetic population (consider regional HLA-alleles).`,
         schema: {
           type: 'object',
           properties: {
@@ -102,29 +122,34 @@ export function NewProjectPage() {
                 }
               }
             },
-            optimizedMrna: { type: 'string' },
+            optimizedSequence: { type: 'string' },
             lnpRecommendation: {
               type: 'object',
               properties: {
-                ionizableLipid: { type: 'string' },
-                helperLipid: { type: 'string' },
-                cholesterol: { type: 'string' },
-                pegLipid: { type: 'string' },
-                ratio: { type: 'string' }
+                composition: { type: 'string' },
+                particleSize: { type: 'string' },
+                stabilityScore: { type: 'number' }
               }
             },
-            efficacyScore: { type: 'number' },
+            geneticAdaptation: {
+              type: 'object',
+              properties: {
+                hlaAlleles: { type: 'array', items: { type: 'string' } },
+                regionalEfficacy: { type: 'number' }
+              }
+            },
             timeSavedEstimate: { type: 'number' }
           },
-          required: ['regionalMutations', 'optimizedMrna', 'lnpRecommendation']
+          required: ['regionalMutations', 'optimizedSequence', 'lnpRecommendation', 'geneticAdaptation']
         }
       });
 
       setAnalysisResults(object.regionalMutations);
-      setMrnaSequence(object.optimizedMrna);
+      setMrnaSequence(object.optimizedSequence);
       setLnpComposition(object.lnpRecommendation);
+      setGeneticAdaptation(object.geneticAdaptation);
       setProgress(100);
-      setStep(3);
+      setStep(4);
     } catch (error: any) {
       toast.error('Analysis failed: ' + error.message);
     } finally {
@@ -144,6 +169,8 @@ export function NewProjectPage() {
         analysisResults: JSON.stringify(analysisResults),
         mrnaSequence,
         lnpComposition: JSON.stringify(lnpComposition),
+        vaccineType,
+        geneticAdaptation: JSON.stringify(geneticAdaptation),
         status: 'completed',
         timeSaved: 168, // 1 week saved
       });
@@ -160,18 +187,18 @@ export function NewProjectPage() {
     <DashboardLayout>
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Progress Header */}
-        <div className="flex items-center justify-between mb-8">
-          {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center gap-2">
+        <div className="flex items-center justify-between mb-8 overflow-x-auto pb-4">
+          {[1, 2, 3, 4].map((s) => (
+            <div key={s} className="flex items-center gap-2 flex-shrink-0">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                 step >= s ? 'bg-secondary text-secondary-foreground' : 'bg-muted text-muted-foreground'
               }`}>
                 {step > s ? <CheckCircle2 className="w-5 h-5" /> : s}
               </div>
-              <span className={`text-sm font-medium ${step >= s ? 'text-primary' : 'text-muted-foreground'}`}>
-                {s === 1 ? 'Setup' : s === 2 ? 'AI Analysis' : 'Review'}
+              <span className={`text-sm font-medium whitespace-nowrap ${step >= s ? 'text-primary' : 'text-muted-foreground'}`}>
+                {s === 1 ? 'Virus' : s === 2 ? 'Design' : s === 3 ? 'AI Analysis' : 'Review'}
               </span>
-              {s < 3 && <div className="w-12 h-px bg-muted mx-4 hidden sm:block" />}
+              {s < 4 && <div className="w-8 md:w-12 h-px bg-muted mx-2 md:mx-4" />}
             </div>
           ))}
         </div>
@@ -187,26 +214,16 @@ export function NewProjectPage() {
               <Card className="border-none shadow-xl">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold flex items-center gap-2 text-primary">
-                    <FlaskConical className="w-6 h-6 text-secondary" />
-                    Configure Design Session
+                    <Dna className="w-6 h-6 text-secondary" />
+                    Target Selection
                   </CardTitle>
                   <CardDescription>
-                    Define your research parameters and select the viral strain target.
+                    Select a virus from our database of local strains or upload your own sequence.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Project Name</Label>
-                    <Input 
-                      id="name" 
-                      placeholder="e.g., Almaty-24 COVID-19 Vaccine Pilot" 
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
-                    />
-                  </div>
-
                   <div className="space-y-3">
-                    <Label>Select Virus Strain</Label>
+                    <Label>Strain Database (Central Asia)</Label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {STRAINS.map((strain) => (
                         <div 
@@ -222,8 +239,8 @@ export function NewProjectPage() {
                             {strain.type === 'Virus' ? <Zap className="w-4 h-4 text-secondary" /> : <Upload className="w-4 h-4 text-primary" />}
                             <span className="font-bold text-sm">{strain.name}</span>
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            {strain.type === 'Virus' ? 'Pre-loaded Central Asian data' : 'Custom sequence via FASTA'}
+                          <p className="text-xs text-muted-foreground italic">
+                            {strain.region}
                           </p>
                         </div>
                       ))}
@@ -276,10 +293,10 @@ export function NewProjectPage() {
                   </div>
                   <Button 
                     onClick={() => setStep(2)} 
-                    disabled={!projectName || !selectedStrain}
+                    disabled={!selectedStrain}
                     className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                   >
-                    Start Analysis <ChevronRight className="w-4 h-4" />
+                    Next: Design Config <ChevronRight className="w-4 h-4" />
                   </Button>
                 </CardFooter>
               </Card>
@@ -289,6 +306,87 @@ export function NewProjectPage() {
           {step === 2 && (
             <motion.div
               key="step2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+            >
+              <Card className="border-none shadow-xl">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold flex items-center gap-2 text-primary">
+                    <FlaskConical className="w-6 h-6 text-secondary" />
+                    Design Configuration
+                  </CardTitle>
+                  <CardDescription>
+                    Define your research goals and target platform.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Project Name</Label>
+                    <Input 
+                      id="name" 
+                      placeholder="e.g., Almaty-24 COVID-19 Vaccine Pilot" 
+                      value={projectName}
+                      onChange={(e) => setProjectName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label>Vaccine Platform</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {VACCINE_TYPES.map((type) => (
+                        <div 
+                          key={type.id}
+                          onClick={() => setVaccineType(type.id)}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                            vaccineType === type.id 
+                              ? 'border-secondary bg-secondary/5 ring-4 ring-secondary/10' 
+                              : 'border-muted hover:border-secondary/30'
+                          }`}
+                        >
+                          <span className="font-bold text-sm block mb-1">{type.name}</span>
+                          <p className="text-[10px] text-muted-foreground leading-tight">{type.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label>Optimization Priority</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {['immunogenicity', 'safety', 'stability', 'speed'].map((p) => (
+                        <Button
+                          key={p}
+                          variant={optimizationPriority === p ? 'secondary' : 'outline'}
+                          size="sm"
+                          onClick={() => setOptimizationPriority(p)}
+                          className="capitalize"
+                        >
+                          {p}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="bg-muted/30 px-6 py-4 flex justify-between">
+                  <Button variant="outline" onClick={() => setStep(1)}>
+                    Back
+                  </Button>
+                  <Button 
+                    onClick={() => setStep(3)} 
+                    disabled={!projectName}
+                    className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                  >
+                    Start AI Analysis <ChevronRight className="w-4 h-4" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div
+              key="step3"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
@@ -305,13 +403,13 @@ export function NewProjectPage() {
                   <div className="space-y-2">
                     <h3 className="text-2xl font-bold text-primary">AI Genotype Analysis</h3>
                     <p className="text-muted-foreground max-w-sm mx-auto">
-                      Scanning for regional mutations and optimizing codon sequences for the {projectName} target.
+                      Scanning for regional mutations and adapting for Central Asian population genetics.
                     </p>
                   </div>
 
                   <div className="max-w-md mx-auto space-y-2">
                     <div className="flex justify-between text-sm font-medium">
-                      <span>{progress < 30 ? 'Reading Sequence...' : progress < 70 ? 'Detecting Mutations...' : 'Optimizing mRNA...'}</span>
+                      <span>{progress < 30 ? 'Reading Sequence...' : progress < 60 ? 'Analyzing HLA compatibility...' : 'Designing Delivery system...'}</span>
                       <span>{progress}%</span>
                     </div>
                     <Progress value={progress} className="h-2 bg-muted accent-secondary" />
@@ -324,7 +422,7 @@ export function NewProjectPage() {
                       size="lg"
                       className="bg-primary hover:bg-primary/90 text-white min-w-[200px]"
                     >
-                      {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : 'Execute Sequence Design'}
+                      {loading ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : 'Execute AI Design'}
                     </Button>
                   </div>
                 </CardContent>
@@ -332,70 +430,95 @@ export function NewProjectPage() {
             </motion.div>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <motion.div
-              key="step3"
+              key="step4"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
             >
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <Card className="lg:col-span-2 border-none shadow-xl overflow-hidden">
                   <CardHeader className="bg-primary text-primary-foreground">
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-secondary" />
-                      Optimized Design Report
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-5 h-5 text-secondary" />
+                        BaiVax Optimized Design
+                      </div>
+                      <Badge className="bg-secondary text-secondary-foreground border-none">AI Generated</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-8 space-y-8">
-                    <div className="space-y-4">
-                      <h4 className="font-bold text-primary flex items-center gap-2">
-                        <Dna className="w-4 h-4 text-secondary" />
-                        mRNA Sequence (Optimized)
-                      </h4>
-                      <div className="p-4 bg-muted/50 rounded-xl font-mono text-xs break-all border overflow-y-auto max-h-40">
-                        {mrnaSequence}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-4">
                         <h4 className="font-bold text-primary flex items-center gap-2">
-                          <AlertCircle className="w-4 h-4 text-secondary" />
-                          Regional Mutations Detected
+                          <ShieldCheck className="w-4 h-4 text-secondary" />
+                          Regional Genetic Adaptation
                         </h4>
-                        <div className="space-y-2">
-                          {analysisResults?.map((mut: any, i: number) => (
-                            <div key={i} className="flex items-center justify-between p-3 bg-white border rounded-lg text-sm">
-                              <span className="font-mono font-bold text-secondary">{mut.site}</span>
-                              <span className="font-medium">{mut.mutation}</span>
-                              <span className="text-xs text-muted-foreground">{mut.significance}</span>
+                        <div className="p-4 bg-secondary/5 border border-secondary/20 rounded-xl space-y-3">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Regional Efficacy</span>
+                            <span className="font-bold text-secondary">{((geneticAdaptation?.regionalEfficacy || 0) * 100).toFixed(1)}%</span>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-[10px] text-muted-foreground uppercase font-bold">Target HLA Alleles</p>
+                            <div className="flex flex-wrap gap-1">
+                              {geneticAdaptation?.hlaAlleles?.map((hla: string) => (
+                                <Badge key={hla} variant="outline" className="text-[10px] py-0">{hla}</Badge>
+                              ))}
                             </div>
-                          ))}
+                          </div>
                         </div>
                       </div>
 
                       <div className="space-y-4">
                         <h4 className="font-bold text-primary flex items-center gap-2">
                           <FlaskConical className="w-4 h-4 text-secondary" />
-                          Recommended LNP Formula
+                          LNP Delivery Profile
                         </h4>
-                        <div className="space-y-2">
-                          {Object.entries(lnpComposition || {}).map(([key, value]: [string, any]) => (
-                            <div key={key} className="flex items-center justify-between p-3 bg-white border rounded-lg text-sm capitalize">
-                              <span className="text-muted-foreground">{key.replace(/([A-Z])/g, ' $1')}</span>
-                              <span className="font-bold text-primary">{value}</span>
-                            </div>
-                          ))}
+                        <div className="p-4 bg-primary/5 border border-primary/20 rounded-xl space-y-3">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Composition</span>
+                            <span className="font-bold text-primary truncate max-w-[120px]">{lnpComposition?.composition}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Stability Score</span>
+                            <span className="font-bold text-primary">{(lnpComposition?.stabilityScore * 100).toFixed(0)}%</span>
+                          </div>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-primary flex items-center gap-2">
+                        <Dna className="w-4 h-4 text-secondary" />
+                        Sequence Design
+                      </h4>
+                      <div className="p-4 bg-muted/50 rounded-xl font-mono text-xs break-all border overflow-y-auto max-h-32">
+                        {mrnaSequence}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-primary flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-secondary" />
+                        Central Asian Mutations Covered
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {analysisResults?.map((mut: any, i: number) => (
+                          <div key={i} className="flex items-center justify-between p-2 bg-white border rounded-lg text-[11px]">
+                            <span className="font-mono font-bold text-secondary">{mut.site}</span>
+                            <span className="font-medium">{mut.mutation}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter className="bg-muted/30 px-6 py-4 flex justify-between">
-                    <Button variant="outline" onClick={() => setStep(1)}>
-                      Back to Start
+                    <Button variant="outline" onClick={() => setStep(2)}>
+                      Modify Parameters
                     </Button>
                     <Button onClick={saveProject} disabled={loading} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-                      {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Save & Finalize Design'}
+                      {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Finalize & Save Project'}
                     </Button>
                   </CardFooter>
                 </Card>

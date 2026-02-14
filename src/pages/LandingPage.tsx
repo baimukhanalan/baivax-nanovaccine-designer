@@ -54,11 +54,11 @@ export function LandingPage() {
               <span>Optimized for Central Asian strains</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-primary mb-6 leading-[1.1]">
-              Rapid Design of <br />
-              <span className="text-secondary">Nano-Vaccines</span> with AI
+              Next-Gen <br />
+              <span className="text-secondary">Vaccine Design</span> with AI
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-              Accelerate your mRNA vaccine R&D from months to days. VacuAI.kz uses deep learning to optimize mRNA sequences and LNP compositions for local virus genotypes.
+              Design optimized mRNA, protein, and vector vaccines in minutes. BaiVax combines state-of-the-art AI with local genomic data to protect Central Asia against any viral threat.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/auth?mode=signup">
@@ -108,7 +108,7 @@ export function LandingPage() {
             <div className="relative z-10">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Savings Calculator</h2>
-                <p className="text-primary-foreground/70">See how much VacuAI.kz can save your organization.</p>
+                <p className="text-primary-foreground/70">See how much BaiVax can save your organization.</p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -233,7 +233,7 @@ export function LandingPage() {
 
             <div className="p-8 rounded-2xl border bg-primary text-primary-foreground relative shadow-xl scale-105">
               <div className="absolute top-0 right-0 bg-secondary text-secondary-foreground text-[10px] font-bold px-2 py-1 rounded-bl-lg rounded-tr-xl uppercase">Popular</div>
-              <h3 className="font-bold text-xl mb-2 text-white">Biotech Lab</h3>
+              <h3 className="font-bold text-xl mb-2 text-white">Biotech Lab Pro</h3>
               <div className="flex items-baseline gap-1 mb-6">
                 <span className="text-3xl font-bold">$499</span>
                 <span className="text-muted-foreground text-sm">/month</span>
@@ -269,7 +269,7 @@ export function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-8">Ready to Design the Future?</h2>
           <p className="text-primary-foreground/70 mb-10 text-lg max-w-2xl mx-auto">
-            Join leading biotech organizations in Central Asia using VacuAI.kz to build a safer tomorrow.
+            Join leading biotech organizations in Central Asia using BaiVax to build a safer tomorrow.
           </p>
           <Link to="/auth?mode=signup">
             <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground border-none h-14 px-10 text-lg">
