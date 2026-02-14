@@ -43,11 +43,31 @@ export function NewProjectPage() {
   const [projectName, setProjectName] = useState('');
   const [selectedStrain, setSelectedStrain] = useState('');
   const [fastaData, setFastaData] = useState('');
+  const [uploadingFile, setUploadingFile] = useState(false);
   
   // Result State
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [mrnaSequence, setMrnaSequence] = useState('');
   const [lnpComposition, setLnpComposition] = useState<any>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingFile(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      setFastaData(content);
+      setUploadingFile(false);
+      toast.success('FASTA file uploaded successfully');
+    };
+    reader.onerror = () => {
+      toast.error('Failed to read file');
+      setUploadingFile(false);
+    };
+    reader.readAsText(file);
+  };
 
   const runAnalysis = async () => {
     setLoading(true);
@@ -211,8 +231,30 @@ export function NewProjectPage() {
                   </div>
 
                   {selectedStrain === 'custom' && (
-                    <div className="space-y-2 animate-fade-in">
-                      <Label htmlFor="fasta">FASTA Data</Label>
+                    <div className="space-y-4 animate-fade-in">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="fasta">FASTA Data</Label>
+                        <div className="relative">
+                          <input
+                            type="file"
+                            id="fasta-upload"
+                            className="hidden"
+                            accept=".fasta,.fa,.txt"
+                            onChange={handleFileUpload}
+                          />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-2"
+                            asChild
+                          >
+                            <label htmlFor="fasta-upload" className="cursor-pointer">
+                              {uploadingFile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                              Upload .fasta
+                            </label>
+                          </Button>
+                        </div>
+                      </div>
                       <textarea 
                         id="fasta"
                         rows={6}
@@ -221,6 +263,9 @@ export function NewProjectPage() {
                         value={fastaData}
                         onChange={(e) => setFastaData(e.target.value)}
                       />
+                      <p className="text-xs text-muted-foreground italic">
+                        * You can either paste the sequence or upload a file.
+                      </p>
                     </div>
                   )}
                 </CardContent>

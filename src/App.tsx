@@ -5,6 +5,10 @@ import { AuthPage } from './pages/AuthPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { NewProjectPage } from './pages/NewProjectPage';
 import { ProjectDetailPage } from './pages/ProjectDetailPage';
+import { ProjectHistoryPage } from './pages/ProjectHistoryPage';
+import { TeamPage } from './pages/TeamPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { DocumentationPage } from './pages/DocumentationPage';
 import { Loader2 } from 'lucide-react';
 
 // Protected Route Wrapper
@@ -32,7 +36,8 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/pricing" element={<LandingPage />} /> {/* Partial anchor logic later */}
+      <Route path="/pricing" element={<LandingPage />} /> 
+      <Route path="/documentation" element={<DocumentationPage />} /> 
       
       {/* Protected Routes */}
       <Route 
@@ -60,10 +65,18 @@ function App() {
         } 
       />
       <Route 
+        path="/history" 
+        element={
+          <ProtectedRoute>
+            <ProjectHistoryPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/settings" 
         element={
           <ProtectedRoute>
-            <div className="flex h-screen items-center justify-center">Settings Page (WIP)</div>
+            <SettingsPage />
           </ProtectedRoute>
         } 
       />
@@ -71,7 +84,7 @@ function App() {
         path="/team" 
         element={
           <ProtectedRoute>
-            <div className="flex h-screen items-center justify-center">Team Page (WIP)</div>
+            <TeamPage />
           </ProtectedRoute>
         } 
       />

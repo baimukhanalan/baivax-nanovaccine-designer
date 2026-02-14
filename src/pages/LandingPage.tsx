@@ -171,7 +171,7 @@ export function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-background">
+      <section id="features" className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Advanced Bio-AI Capabilities</h2>
@@ -211,7 +211,7 @@ export function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-24 bg-muted/30">
+      <section id="pricing" className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Predictable Pricing</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-16">Choose the plan that fits your research or commercial needs.</p>
