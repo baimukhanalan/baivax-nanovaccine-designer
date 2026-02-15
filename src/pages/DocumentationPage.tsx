@@ -12,7 +12,7 @@ export function DocumentationPage() {
         <div className="max-w-4xl mx-auto space-y-12">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold text-primary">Documentation</h1>
-            <p className="text-xl text-muted-foreground">Technical guides and API references for the VacuAI.kz platform.</p>
+            <p className="text-xl text-muted-foreground">Technical guides and API references for the BaiVax platform.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -71,12 +71,12 @@ export function DocumentationPage() {
               Biosafety & Ethics
             </h2>
             <p className="text-muted-foreground mb-4">
-              VacuAI.kz operates in strict accordance with the Biological Weapons Convention and local biosafety regulations. 
+              BaiVax operates in strict accordance with the Biological Weapons Convention and local biosafety regulations. 
               All sequence designs are screened for dual-use concerns before generation.
             </p>
             <h3 className="text-lg font-bold text-primary mb-2">Data Sovereignty</h3>
             <p className="text-muted-foreground">
-              Genomic data uploaded to VacuAI.kz remains the property of the originating institution. 
+              Genomic data uploaded to BaiVax remains the property of the originating institution. 
               We utilize encrypted enclaves to ensure that your intellectual property is never exposed to third parties.
             </p>
           </div>

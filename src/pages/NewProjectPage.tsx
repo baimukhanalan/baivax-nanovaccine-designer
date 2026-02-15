@@ -19,11 +19,13 @@ import {
   Zap,
   Microscope,
   ShieldCheck,
-  FileText
+  FileText,
+  TrendingUp
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { Progress } from '../components/ui/progress';
+import { Badge } from '../components/ui/badge';
 
 const STRAINS = [
   { id: 'covid-almaty-24', name: 'SARS-CoV-2 (Almaty-24)', region: 'Kazakhstan', type: 'Virus' },

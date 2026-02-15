@@ -10,7 +10,8 @@ import {
   Database,
   Globe,
   Save,
-  Loader2
+  Loader2,
+  DollarSign
 } from 'lucide-react';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';

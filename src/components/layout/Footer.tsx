@@ -21,27 +21,27 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-primary-foreground/60">
               <li><Link to="/dashboard" className="hover:text-secondary">Dashboard</Link></li>
               <li><Link to="/new-project" className="hover:text-secondary">Design Wizard</Link></li>
-              <li><Link to="/strains" className="hover:text-secondary">Strain Database</Link></li>
-              <li><Link to="/analytics" className="hover:text-secondary">Analytics</Link></li>
+              <li><Link to="/library" className="hover:text-secondary">Strain Library</Link></li>
+              <li><Link to="/history" className="hover:text-secondary">Project History</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li><Link to="/about" className="hover:text-secondary">About Us</Link></li>
-              <li><Link to="/pricing" className="hover:text-secondary">Pricing</Link></li>
-              <li><Link to="/careers" className="hover:text-secondary">Careers</Link></li>
-              <li><Link to="/contact" className="hover:text-secondary">Contact</Link></li>
+              <li><a href="/#features" className="hover:text-secondary">Features</a></li>
+              <li><a href="/#pricing" className="hover:text-secondary">Pricing</a></li>
+              <li><Link to="/documentation" className="hover:text-secondary">Documentation</Link></li>
+              <li><Link to="/team" className="hover:text-secondary">Team</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/60">
-              <li><Link to="/privacy" className="hover:text-secondary">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-secondary">Terms of Service</Link></li>
-              <li><Link to="/compliance" className="hover:text-secondary">Compliance</Link></li>
+              <li><span className="hover:text-secondary cursor-pointer">Privacy Policy</span></li>
+              <li><span className="hover:text-secondary cursor-pointer">Terms of Service</span></li>
+              <li><span className="hover:text-secondary cursor-pointer">Compliance</span></li>
             </ul>
           </div>
         </div>

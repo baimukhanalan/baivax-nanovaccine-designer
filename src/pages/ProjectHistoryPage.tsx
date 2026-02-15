@@ -12,7 +12,8 @@ import {
   Beaker,
   History,
   Download,
-  Trash2
+  Trash2,
+  FlaskConical
 } from 'lucide-react';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'react-hot-toast';
@@ -114,7 +115,7 @@ export function ProjectHistoryPage() {
                     </div>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
-                        < FlaskConical className="w-3 h-3" />
+                        <FlaskConical className="w-3 h-3" />
                         {project.virusStrain}
                       </span>
                       <span className="flex items-center gap-1">
