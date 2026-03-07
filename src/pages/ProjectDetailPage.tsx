@@ -188,6 +188,15 @@ export function ProjectDetailPage() {
                           </div>
                         </div>
                       </div>
+                      
+                      {adaptation?.adaptationSummary && (
+                        <div className="p-4 bg-muted/30 rounded-xl border">
+                          <p className="text-xs text-muted-foreground uppercase font-bold mb-2">Scientific Justification</p>
+                          <p className="text-sm italic text-primary leading-relaxed">
+                            "{adaptation.adaptationSummary}"
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -237,14 +246,21 @@ export function ProjectDetailPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {Object.entries(lnp).map(([key, value]: [string, any]) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      {Object.entries(lnp).filter(([k]) => k !== 'lipidChemistry').map(([key, value]: [string, any]) => (
                         <div key={key} className="p-4 bg-white border rounded-xl flex items-center justify-between">
                           <span className="text-sm text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
-                          <span className="font-bold text-primary">{value}</span>
+                          <span className="font-bold text-primary">{typeof value === 'number' && key.toLowerCase().includes('score') ? (value * 100).toFixed(0) + '%' : value}</span>
                         </div>
                       ))}
                     </div>
+                    
+                    {lnp?.lipidChemistry && (
+                      <div className="p-4 bg-primary/5 border-l-4 border-primary rounded-r-xl">
+                        <p className="text-xs text-muted-foreground uppercase font-bold mb-1">Lipid Chemistry Class</p>
+                        <p className="text-sm font-bold text-primary">{lnp.lipidChemistry}</p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>

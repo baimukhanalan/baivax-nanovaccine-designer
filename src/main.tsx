@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { BlinkProvider, BlinkAuthProvider } from '@blinkdotnew/react';
 import { Toaster } from 'react-hot-toast';
+import { LanguageProvider } from './contexts/LanguageContext';
 import App from './App';
 import './index.css';
 
@@ -22,11 +23,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       publishableKey={import.meta.env.VITE_BLINK_PUBLISHABLE_KEY}
     >
       <BlinkAuthProvider>
-        <BrowserRouter>
-          <Toaster position="top-right" />
-          <App />
-        </BrowserRouter>
+        <LanguageProvider>
+          <BrowserRouter>
+            <Toaster position="top-right" />
+            <App />
+          </BrowserRouter>
+        </LanguageProvider>
       </BlinkAuthProvider>
     </BlinkProvider>
   </React.StrictMode>
-); 
+);

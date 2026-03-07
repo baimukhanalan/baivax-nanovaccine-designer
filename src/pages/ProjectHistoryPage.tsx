@@ -18,8 +18,10 @@ import {
 import { Badge } from '../components/ui/badge';
 import { toast } from 'react-hot-toast';
 import { Input } from '../components/ui/input';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function ProjectHistoryPage() {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -65,9 +67,9 @@ export function ProjectHistoryPage() {
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
               <History className="w-8 h-8 text-secondary" />
-              Project History
+              {t('history.title') || 'Project History'}
             </h2>
-            <p className="text-muted-foreground">Comprehensive record of all your vaccine designs and analysis reports.</p>
+            <p className="text-muted-foreground">{t('history.desc') || 'Comprehensive record of all your vaccine designs and analysis reports.'}</p>
           </div>
         </div>
 
@@ -75,7 +77,7 @@ export function ProjectHistoryPage() {
           <div className="relative flex-1 w-full">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <Input 
-              placeholder="Search by name or strain..." 
+              placeholder={t('history.searchPlaceholder') || "Search by name or strain..."} 
               className="pl-9"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -83,11 +85,11 @@ export function ProjectHistoryPage() {
           </div>
           <Button variant="outline" className="gap-2 w-full md:w-auto">
             <Filter className="w-4 h-4" />
-            Filter
+            {t('history.filterButton') || 'Filter'}
           </Button>
           <Button variant="outline" className="gap-2 w-full md:w-auto">
             <Download className="w-4 h-4" />
-            Export CSV
+            {t('history.exportCsvButton') || 'Export CSV'}
           </Button>
         </div>
 
@@ -128,7 +130,7 @@ export function ProjectHistoryPage() {
                   <div className="flex items-center gap-2 shrink-0">
                     <Link to={`/project/${project.id}`}>
                       <Button variant="outline" size="sm" className="gap-2">
-                        View Details
+                        {t('history.viewDetailsButton') || 'View Details'}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     </Link>
@@ -147,11 +149,11 @@ export function ProjectHistoryPage() {
           ) : (
             <div className="py-20 text-center bg-white rounded-3xl border border-dashed border-muted-foreground/20">
               <History className="w-12 h-12 text-muted-foreground/20 mx-auto mb-4" />
-              <h4 className="text-xl font-semibold text-primary mb-2">No projects found</h4>
-              <p className="text-muted-foreground mb-6">Try adjusting your search or create a new design session.</p>
+              <h4 className="text-xl font-semibold text-primary mb-2">{t('history.noProjectsFound.title') || 'No projects found'}</h4>
+              <p className="text-muted-foreground mb-6">{t('history.noProjectsFound.desc') || 'Try adjusting your search or create a new design session.'}</p>
               <Link to="/new-project">
                 <Button className="bg-secondary hover:bg-secondary/90 text-secondary-foreground">
-                  New Vaccine Design
+                  {t('history.newDesignButton') || 'New Vaccine Design'}
                 </Button>
               </Link>
             </div>

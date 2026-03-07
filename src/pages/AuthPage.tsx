@@ -6,10 +6,12 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
-import { FlaskConical, Github, Mail, Loader2 } from 'lucide-react';
+import { FlaskConical, Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function AuthPage() {
+  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { isAuthenticated, loading: authLoading } = useAuth();
@@ -79,12 +81,12 @@ export function AuthPage() {
         <Card className="border-none shadow-xl">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
-              {isLogin ? 'Sign In' : 'Create Account'}
+              {isLogin ? t('auth.signin_title') : t('auth.signup_title')}
             </CardTitle>
             <CardDescription className="text-center">
               {isLogin 
-                ? 'Enter your credentials to access the BaiVax dashboard' 
-                : 'Join the next generation of vaccine design for Central Asia'}
+                ? t('auth.signin_desc')
+                : t('auth.signup_desc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -117,14 +119,14 @@ export function AuthPage() {
                 <span className="w-full border-t" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-background px-2 text-muted-foreground">{t('auth.or_continue')}</span>
               </div>
             </div>
 
             <form onSubmit={handleAuth} className="space-y-4">
               {!isLogin && (
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">{t('auth.full_name')}</Label>
                   <Input 
                     id="name" 
                     placeholder="John Doe" 
@@ -135,7 +137,7 @@ export function AuthPage() {
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('auth.email')}</Label>
                 <Input 
                   id="email" 
                   type="email" 
@@ -147,10 +149,10 @@ export function AuthPage() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t('auth.password')}</Label>
                   {isLogin && (
                     <Button variant="link" className="px-0 font-normal h-auto text-xs">
-                      Forgot password?
+                      {t('auth.forgot_password')}
                     </Button>
                   )}
                 </div>
@@ -164,7 +166,7 @@ export function AuthPage() {
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isLogin ? 'Sign In' : 'Create Account'}
+                {isLogin ? t('auth.signin_button') : t('auth.signup_button')}
               </Button>
             </form>
           </CardContent>
@@ -174,7 +176,7 @@ export function AuthPage() {
               className="w-full text-sm" 
               onClick={() => setIsLogin(!isLogin)}
             >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              {isLogin ? t('auth.no_account') : t('auth.has_account')}
             </Button>
           </CardFooter>
         </Card>

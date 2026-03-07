@@ -11,7 +11,6 @@ import {
   Filter, 
   Clock, 
   TrendingUp, 
-  DollarSign,
   Activity,
   ArrowRight,
   MoreVertical,
@@ -20,9 +19,11 @@ import {
 } from 'lucide-react';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'react-hot-toast';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function DashboardPage() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,19 +47,19 @@ export function DashboardPage() {
 
   const stats = [
     { 
-      label: 'Total Designs', 
+      label: t('dash.stats.projects'), 
       value: projects.length, 
       icon: FlaskConical, 
       color: 'text-secondary bg-secondary/10' 
     },
     { 
-      label: 'Time Saved', 
+      label: t('dash.stats.time'), 
       value: `${projects.reduce((acc, p) => acc + (p.timeSaved || 0), 0).toFixed(1)} Days`, 
       icon: Clock, 
       color: 'text-accent bg-accent/10' 
     },
     { 
-      label: 'Regional Adaptation', 
+      label: t('dash.stats.adaptation'), 
       value: '100%', 
       icon: TrendingUp, 
       color: 'text-green-600 bg-green-600/10' 
@@ -77,13 +78,13 @@ export function DashboardPage() {
         {/* Welcome Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-primary">Welcome back, {user?.displayName?.split(' ')[0] || 'Researcher'}</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-primary">{t('dash.welcome')} {user?.displayName?.split(' ')[0] || 'Researcher'}</h2>
             <p className="text-muted-foreground">Monitor your vaccine designs and research progress.</p>
           </div>
           <Link to="/new-project">
             <Button className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20">
               <Plus className="w-4 h-4" />
-              New Vaccine Design
+              {t('dash.new_project')}
             </Button>
           </Link>
         </div>
@@ -108,7 +109,7 @@ export function DashboardPage() {
         {/* Recent Projects */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-primary">Recent Projects</h3>
+            <h3 className="text-xl font-bold text-primary">{t('dash.recent_projects')}</h3>
             <div className="flex items-center gap-2">
               <div className="relative">
                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
