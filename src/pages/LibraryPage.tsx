@@ -5,6 +5,7 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Search, Database, FlaskConical, Filter, Dna } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const MOCK_STRAINS = [
   { id: 'S1', name: 'Influenza A (H1N1) - Almaty/2024', type: 'Virus', region: 'Kazakhstan', date: '2024-01-15' },
@@ -15,6 +16,7 @@ const MOCK_STRAINS = [
 ];
 
 export function LibraryPage() {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredStrains = MOCK_STRAINS.filter(s => 
@@ -27,12 +29,12 @@ export function LibraryPage() {
       <div className="space-y-8 animate-fade-in">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Strain & Design Library</h1>
-            <p className="text-muted-foreground">Access 500+ local Central Asian strains and optimized designs.</p>
+            <h1 className="text-3xl font-bold tracking-tight">{t('library.title') || 'Strain & Design Library'}</h1>
+            <p className="text-muted-foreground">{t('library.desc') || 'Access 500+ local Central Asian strains and optimized designs.'}</p>
           </div>
           <Button className="gap-2">
             <Database className="w-4 h-4" />
-            Request New Strain
+            {t('library.requestButton') || 'Request New Strain'}
           </Button>
         </div>
 
@@ -48,7 +50,7 @@ export function LibraryPage() {
           </div>
           <Button variant="outline" className="gap-2">
             <Filter className="w-4 h-4" />
-            Filters
+            {t('library.filterButton') || 'Filters'}
           </Button>
         </div>
 
@@ -71,8 +73,8 @@ export function LibraryPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Collected: {strain.date}</span>
-                  <Button variant="link" size="sm" className="h-auto p-0 text-secondary">View FASTA</Button>
+                  <span className="text-muted-foreground">{t('library.collected') || 'Collected:'} {strain.date}</span>
+                  <Button variant="link" size="sm" className="h-auto p-0 text-secondary">{t('library.viewFasta') || 'View FASTA'}</Button>
                 </div>
               </CardContent>
             </Card>

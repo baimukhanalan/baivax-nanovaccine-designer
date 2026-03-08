@@ -64,6 +64,7 @@ export function NewProjectPage() {
   const [mrnaSequence, setMrnaSequence] = useState('');
   const [lnpComposition, setLnpComposition] = useState<any>(null);
   const [geneticAdaptation, setGeneticAdaptation] = useState<any>(null);
+  const [analysisLogs, setAnalysisLogs] = useState<string[]>([]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,11 +90,36 @@ export function NewProjectPage() {
       toast.error('Please enter a project name');
       return;
     }
+
+    if (selectedStrain === 'custom' && !fastaData) {
+      toast.error('Please provide FASTA sequence data');
+      return;
+    }
     
     setLoading(true);
     setProgress(0);
+    setAnalysisLogs([]);
     
-    // Realistic progress animation
+    const logs = [
+      'Initializing bioinformatics pipeline...',
+      'Validating genetic sequence integrity...',
+      'Mapping conserved viral epitopes...',
+      'Analyzing MHC Class I/II affinity...',
+      'Cross-referencing Central Asian HLA frequencies...',
+      'Optimizing codon usage for human expression...',
+      'Predicting mRNA secondary structure stability...',
+      'Designing Lipid Nanoparticle molar ratios...',
+      'Finalizing vaccine design protocol...'
+    ];
+
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+      if (logIndex < logs.length) {
+        setAnalysisLogs(prev => [...prev, logs[logIndex]]);
+        logIndex++;
+      }
+    }, 1500);
+
     const progressInterval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 95) return prev;
@@ -165,6 +191,7 @@ export function NewProjectPage() {
       setGeneticAdaptation(object.geneticAdaptation);
       
       clearInterval(progressInterval);
+      clearInterval(logInterval);
       setProgress(100);
       
       // Short delay for the 100% to be visible before switching
@@ -174,6 +201,7 @@ export function NewProjectPage() {
       
     } catch (error: any) {
       clearInterval(progressInterval);
+      clearInterval(logInterval);
       toast.error('Analysis failed: ' + error.message);
     } finally {
       setLoading(false);
@@ -429,12 +457,27 @@ export function NewProjectPage() {
                     </p>
                   </div>
 
-                  <div className="max-w-md mx-auto space-y-2">
-                    <div className="flex justify-between text-sm font-medium">
-                      <span>{progress < 30 ? t('wiz.progress_reading') : progress < 60 ? t('wiz.progress_hla') : t('wiz.progress_delivery')}</span>
-                      <span>{progress}%</span>
+                  <div className="max-w-md mx-auto space-y-4 text-left">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm font-medium">
+                        <span>{progress < 30 ? t('wiz.progress_reading') : progress < 60 ? t('wiz.progress_hla') : t('wiz.progress_delivery')}</span>
+                        <span>{Math.round(progress)}%</span>
+                      </div>
+                      <Progress value={progress} className="h-2 bg-muted accent-secondary" />
                     </div>
-                    <Progress value={progress} className="h-2 bg-muted accent-secondary" />
+
+                    <div className="bg-primary/5 rounded-xl p-4 h-40 overflow-y-auto border font-mono text-[10px] space-y-1">
+                      {analysisLogs.length === 0 && (
+                        <p className="text-muted-foreground italic">Ready to begin analysis...</p>
+                      )}
+                      {analysisLogs.map((log, i) => (
+                        <div key={i} className="flex gap-2">
+                          <span className="text-secondary font-bold">[{new Date().toLocaleTimeString([], {hour12: false})}]</span>
+                          <span className="text-primary">{log}</span>
+                        </div>
+                      ))}
+                      {loading && <div className="w-1 h-3 bg-secondary animate-pulse inline-block ml-1" />}
+                    </div>
                   </div>
 
                   <div className="pt-4">
@@ -525,11 +568,17 @@ export function NewProjectPage() {
                         <AlertCircle className="w-4 h-4 text-secondary" />
                         {t('wiz.mutations_covered_title')}
                       </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {analysisResults?.map((mut: any, i: number) => (
-                          <div key={i} className="flex items-center justify-between p-2 bg-white border rounded-lg text-[11px]">
-                            <span className="font-mono font-bold text-secondary">{mut.site}</span>
-                            <span className="font-medium">{mut.mutation}</span>
+                          <div key={i} className="p-3 bg-white border rounded-xl flex items-center gap-3 shadow-sm hover:border-secondary transition-colors group">
+                            <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center font-mono font-bold text-secondary text-[10px]">
+                              {mut.site}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-bold text-primary text-xs">{mut.mutation}</p>
+                              <p className="text-[9px] text-muted-foreground truncate">{mut.significance}</p>
+                            </div>
+                            <Badge variant="outline" className="text-[8px] py-0 border-secondary text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">FIXED</Badge>
                           </div>
                         ))}
                       </div>

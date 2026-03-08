@@ -16,6 +16,7 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { toast } from 'react-hot-toast';
 import { Input } from '../components/ui/input';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const INITIAL_MEMBERS = [
   { id: '1', name: 'Dr. Alibekov', email: 'alibekov@nu.edu.kz', role: 'Researcher', status: 'Active', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix' },
@@ -24,6 +25,7 @@ const INITIAL_MEMBERS = [
 ];
 
 export function TeamPage() {
+  const { t } = useLanguage();
   const [members, setMembers] = useState(INITIAL_MEMBERS);
   const [inviteEmail, setInviteEmail] = useState('');
 
@@ -41,13 +43,13 @@ export function TeamPage() {
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-primary flex items-center gap-3">
               <Users className="w-8 h-8 text-secondary" />
-              Team Management
+              {t('team.title') || 'Team Management'}
             </h2>
-            <p className="text-muted-foreground">Collaborate with fellow researchers and manage organizational access.</p>
+            <p className="text-muted-foreground">{t('team.desc') || 'Collaborate with fellow researchers and manage organizational access.'}</p>
           </div>
           <Button className="gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
             <UserPlus className="w-4 h-4" />
-            Invite Member
+            {t('team.inviteButton') || 'Invite Member'}
           </Button>
         </div>
 
@@ -55,8 +57,8 @@ export function TeamPage() {
           <div className="lg:col-span-2 space-y-6">
             <Card className="border-none shadow-xl">
               <CardHeader>
-                <CardTitle>Organization Members</CardTitle>
-                <CardDescription>A list of all users in your research laboratory.</CardDescription>
+                <CardTitle>{t('team.members.title') || 'Organization Members'}</CardTitle>
+                <CardDescription>{t('team.members.desc') || 'A list of all users in your research laboratory.'}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -100,8 +102,8 @@ export function TeamPage() {
                     <Globe className="w-6 h-6 text-secondary-foreground" />
                   </div>
                   <div>
-                    <h4 className="font-bold">Regional Network</h4>
-                    <p className="text-xs text-primary-foreground/70">You are connected to the Nazarbayev University Research Node.</p>
+                    <h4 className="font-bold">{t('team.network.title') || 'Regional Network'}</h4>
+                    <p className="text-xs text-primary-foreground/70">{t('team.network.desc') || 'You are connected to the Nazarbayev University Research Node.'}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -111,8 +113,8 @@ export function TeamPage() {
                     <Lock className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="font-bold">Access Control</h4>
-                    <p className="text-xs text-muted-foreground">All members have mandatory 2FA enabled for FASTA data security.</p>
+                    <h4 className="font-bold">{t('team.access.title') || 'Access Control'}</h4>
+                    <p className="text-xs text-muted-foreground">{t('team.access.desc') || 'All members have mandatory 2FA enabled for FASTA data security.'}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -122,21 +124,21 @@ export function TeamPage() {
           <div className="space-y-6">
             <Card className="border-none shadow-xl">
               <CardHeader>
-                <CardTitle className="text-lg">Quick Invite</CardTitle>
-                <CardDescription>Send a collaboration link to a researcher.</CardDescription>
+                <CardTitle className="text-lg">{t('team.inviteCard.title') || 'Quick Invite'}</CardTitle>
+                <CardDescription>{t('team.inviteCard.desc') || 'Send a collaboration link to a researcher.'}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleInvite} className="space-y-4">
                   <div className="space-y-2">
                     <Input 
-                      placeholder="email@example.kz" 
+                      placeholder={t('team.inviteCard.placeholder') || 'email@example.kz'} 
                       value={inviteEmail}
                       onChange={(e) => setInviteEmail(e.target.value)}
                     />
                   </div>
                   <Button className="w-full gap-2 bg-primary text-white" type="submit">
                     <Mail className="w-4 h-4" />
-                    Send Invitation
+                    {t('team.inviteCard.button') || 'Send Invitation'}
                   </Button>
                 </form>
               </CardContent>
@@ -144,28 +146,28 @@ export function TeamPage() {
 
             <Card className="border-none shadow-xl">
               <CardHeader>
-                <CardTitle className="text-lg">Laboratory Roles</CardTitle>
+                <CardTitle className="text-lg">{t('team.roles.title') || 'Laboratory Roles'}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-secondary mt-1 shrink-0" />
                   <div>
-                    <p className="text-sm font-bold">Admin</p>
-                    <p className="text-xs text-muted-foreground">Full access to projects and billing.</p>
+                    <p className="text-sm font-bold">{t('team.roles.admin.title') || 'Admin'}</p>
+                    <p className="text-xs text-muted-foreground">{t('team.roles.admin.desc') || 'Full access to projects and billing.'}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-secondary mt-1 shrink-0" />
                   <div>
-                    <p className="text-sm font-bold">Researcher</p>
-                    <p className="text-xs text-muted-foreground">Can create and analyze vaccine designs.</p>
+                    <p className="text-sm font-bold">{t('team.roles.researcher.title') || 'Researcher'}</p>
+                    <p className="text-xs text-muted-foreground">{t('team.roles.researcher.desc') || 'Can create and analyze vaccine designs.'}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-secondary mt-1 shrink-0" />
                   <div>
-                    <p className="text-sm font-bold">Viewer</p>
-                    <p className="text-xs text-muted-foreground">Read-only access to final reports.</p>
+                    <p className="text-sm font-bold">{t('team.roles.viewer.title') || 'Viewer'}</p>
+                    <p className="text-xs text-muted-foreground">{t('team.roles.viewer.desc') || 'Read-only access to final reports.'}</p>
                   </div>
                 </div>
               </CardContent>

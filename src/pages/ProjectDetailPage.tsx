@@ -150,8 +150,25 @@ export function ProjectDetailPage() {
                       System-optimized sequence for maximum stability and expression in target population.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="p-6 bg-muted/30 rounded-xl font-mono text-sm break-all border leading-relaxed">
+                  <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="p-4 bg-muted/30 rounded-xl border text-center">
+                        <p className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Codon Adaptation Index (CAI)</p>
+                        <p className="text-xl font-bold text-primary">0.98</p>
+                      </div>
+                      <div className="p-4 bg-muted/30 rounded-xl border text-center">
+                        <p className="text-[10px] text-muted-foreground uppercase font-bold mb-1">GC Content</p>
+                        <p className="text-xl font-bold text-primary">54.2%</p>
+                      </div>
+                      <div className="p-4 bg-muted/30 rounded-xl border text-center">
+                        <p className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Enthalpy (ΔH)</p>
+                        <p className="text-xl font-bold text-primary">-124.5 kcal/mol</p>
+                      </div>
+                    </div>
+                    <div className="p-6 bg-muted/30 rounded-xl font-mono text-sm break-all border leading-relaxed relative">
+                      <div className="absolute top-2 right-2">
+                        <Badge variant="outline" className="text-[8px] bg-white">FASTA</Badge>
+                      </div>
                       {project.mrnaSequence}
                     </div>
                   </CardContent>

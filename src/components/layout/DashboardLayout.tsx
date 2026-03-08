@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '../../lib/utils';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -23,16 +24,17 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, signOut } = useAuth();
+  const { t } = useLanguage();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Overview', path: '/dashboard' },
-    { icon: PlusCircle, label: 'New Design', path: '/new-project' },
-    { icon: Database, label: 'Library', path: '/library' },
-    { icon: History, label: 'Project History', path: '/history' },
-    { icon: Users, label: 'Team', path: '/team' },
-    { icon: Settings, label: 'Settings', path: '/settings' },
+    { icon: LayoutDashboard, label: t('nav.dashboard'), path: '/dashboard' },
+    { icon: PlusCircle, label: t('dash.new_project'), path: '/new-project' },
+    { icon: Database, label: t('nav.library') || 'Library', path: '/library' },
+    { icon: History, label: t('history.title'), path: '/history' },
+    { icon: Users, label: t('nav.team') || 'Team', path: '/team' },
+    { icon: Settings, label: t('nav.settings') || 'Settings', path: '/settings' },
   ];
 
   return (
